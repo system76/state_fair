@@ -29,6 +29,7 @@ defmodule StateFair.Mixfile do
   defp deps do
     [
       {:mix_test_watch, "~> 0.2", only: :dev},
+      {:dogma,          "~> 0.0", only: :dev},
     ]
   end
 end

@@ -1,4 +1,10 @@
 defmodule StateFair.StateManager do
+  @moduledoc """
+  Helpers used by the `state_manager` macro in `StateFair` module.
+
+  These methods should not be invoked directly.
+  """
+
   def handle_event(struct, property, transitions) do
     current_state = Map.get(struct, property)
 

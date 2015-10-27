@@ -25,8 +25,11 @@ defmodule StateFair.StateManager do
   end
 
   defp find_legal_transition(transitions, target) do
-    transitions
-    |> Enum.reverse
-    |> Enum.find fn {state, _} -> state == target end
+    transitions |> Enum.reverse |> Enum.find fn
+      {{:any}, _}                      -> true
+      {states, _} when is_list(states) -> target in states
+      {state, _}                       -> state == target
+      _                                -> false
+    end
   end
 end

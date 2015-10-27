@@ -6,11 +6,16 @@ defmodule TestModule do
   state_manager :state do
     event :do_stuff do
       transition from: :new, to: :done
+      transition from: [:first, :second], to: :last
     end
 
     event :change_color do
       transition from: :green, to: :red
       transition from: :green, to: :blue
+    end
+
+    event :always_match do
+      transition from: {:any}, to: :matched
     end
   end
 end
@@ -33,6 +38,18 @@ defmodule StateFairTest do
     {:ok, mod} = %TestModule{state: :green} |> TestModule.change_color
 
     assert mod.state == :red
+  end
+
+  test "it matches a transition from a list" do
+    {:ok, mod} = %TestModule{state: :first} |> TestModule.do_stuff
+
+    assert mod.state == :last
+  end
+
+  test "`{:any}` always matches" do
+    {:ok, mod} = %TestModule{state: :new} |> TestModule.always_match
+
+    assert mod.state == :matched
   end
 
   test "reports whether events can be fired" do
